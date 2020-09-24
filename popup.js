@@ -38,7 +38,7 @@ const filloutForm = function () {
   //         //       {code: 'document.body.style.backgroundColor = "' + "black" + '";'});
   //         // });       
   //   });
-  // });
+  });
 };
 // Gets each of the setup classes
 chrome.storage.sync.get(["class"], (result) => {
