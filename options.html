@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      button {
+        height: 30px;
+        width: 30px;
+        outline: none;
+        margin: 10px;
+      }
+      .container {
+        width: "100%";
+        margin: 0 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        color: white;
+        background-color: #222;
+      }
+      .horizontalContainer {
+        width: "100%";
+        margin: 0 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+        color: white;
+        background-color: #222;
+      }
+      h2 {
+        border-bottom: 2px solid #007fa9;
+        line-height: 50px;
+        width: 100%;
+        font-size: 24px;
+      }
+      div {
+        width: 100%;
+        font-size: 18px;
+      }
+      p {
+        text-indent: 30px;
+      }
+      input {
+        width: 500px;
+        height: 30px;
+        font-size: 16px;
+        padding: 4px 8px;
+        margin: 10px;
+        background-color: rgb(65, 65, 65);
+        border: 1px solid white;
+        border-radius: 4px;
+        color: white;
+      }
+      button {
+        width: 150px;
+        background-color: rgb(65, 65, 65);
+        color: white;
+        font-size: 18px;
+        border-radius: 6px;
+        margin: 0px;
+      }
+      a {
+        font-weight: bold;
+        color: white;
+      }
+      a:hover {
+        border-bottom: none;
+        color: #007fa9;
+      }
+    </style>
+  </head>
+  <body class="container">
+    <div>
+      <h2>About</h2>
+      <p>
+        Welcome to MP Attendance Autofill! This is an extension focused on
+        automating the attendance forms for Mountain Pointe High School. It's
+        extremely annoying to have to go to the attendance form, fill out all of
+        the fields by hand, and then remember whether you completed it already
+        or not. This extension aims to get rid of all of these annoyances, and
+        streamline the process for all Mountain Pointe students.
+      </p>
+    </div>
+    <div>
+      <h2>Setup</h2>
+      <p>
+        Let's get everything setup. First, start by filling out the "User
+        Information" section. This asks for your First Name, your Last Name, and
+        your Student ID. These are stored locally and used to fill out each
+        individual attendance form. Second, fill out the "Class Information"
+        section. This asks for all of your class periods, and allows us to fill
+        out and keep track of each class's attendance form. To get your
+        attendance form URL's, simply visit schoology, go to your attendance
+        form like you were filling it out normally, and then copy the link at
+        the top of the browser. This allows the extension to visit the
+        attendance page and fill it out for you.
+      </p>
+      <p>
+        Once you've done both of those, you can start using the extension!
+        Simply go to the extension menu in the top right of Chrome and click on
+        the Mountain Pointe logo. This will open a menu where you can auto-fill
+        a single attendance form, check if an attendance form has already been
+        filled out today, or auto-fill all of your attendance forms for the day.
+      </p>
+    </div>
+    <button id="fillFormInfo">Test Form Info</button>
+    <div class="container">
+      <h2>User Options</h2>
+      <label for="firstName">First Name:</label>
+      <input placeholder="Example: John" id="firstName" /> <br />
+      <label for="lastName">Last Name:</label>
+      <input placeholder="Example: Doe" id="lastName" /> <br />
+      <label for="studentID">Student ID:</label>
+      <input placeholder="Example: S21900999" id="studentID" /> <br />
+      <!-- <div class="horizontalContainer">
+          <label for="autoSubmit">Auto-Submit</label> <input id="autoSubmit" type="checkbox" />
+          <label for="autoClose">Auto-Close</label> <input id="autoClose" type="checkbox" />
+        </div> -->
+      <button id="userOptionsSave">Save</button>
+    </div>
+    <div class="container">
+      <h2>Class Options</h2>
+      <label for="period0">Zero Hour:</label> <input id="period0" />
+      <label for="period1">Period 1:</label> <input id="period1" />
+      <label for="period2">Period 2:</label> <input id="period2" />
+      <label for="period3">Period 3:</label> <input id="period3" />
+      <label for="period4">Period 4:</label> <input id="period4" />
+      <label for="period5">Period 5:</label> <input id="period5" />
+      <label for="period6">Period 6:</label> <input id="period6" />
+      <label for="period7">Period 7:</label> <input id="period7" />
+      <label for="period8">Period 8:</label> <input id="period8" />
+      <label for="period9">Period 9:</label> <input id="period9" />
+      <label for="period10">Period 10:</label> <input id="period10" /> <br />
+      <button id="classOptionsSave">Save</button> <br />
+    </div>
+    <div>
+      <h2>Credits</h2>
+      <p>Created by Mitch Zakocs</p>
+      <p>Please contact <a href="mailto:mzakocs@gmail.com">mzakocs@gmail.com</a> with any feature requests or bug reports.</p>
+      <p>If you're interested, check out the project on <a href="https://github.com/mzakocs/MPAttendanceAutofill">GitHub</a>!</p>
+    </div>
+  </body>
+  <script src="options.js"></script>
+</html>
