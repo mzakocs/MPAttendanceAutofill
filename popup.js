@@ -1,12 +1,20 @@
 // Sets up a control for each period that's been given
 let periodsContainer = document.getElementById("periodsContainer");
 // Function Declaration
-const filloutForm = function () {
+const updateDate = function (periodNumber) {
+  // Gets the old period data
+  chrome.storage.sync.get(["class"], (result) => {
+    let data = result.class;
+    data[periodNumber].last_completed = new Date().toDateString();
+    chrome.storage.sync.set({ class: data });
+  });
+};
+const filloutForm = async function () {
   // This grabs the user info, opens the given form, and then injects
   // the "formFillInjection" function into the google sheets page with the given params
   // Starts by getting the user info from the storage
   let { period_num, last_completed, link } = this;
-  chrome.storage.sync.get(["user"], (result) => {
+  await chrome.storage.sync.get(["user"], (result) => {
     if (result.user === undefined) return;
     let user = result.user;
     // Checks that everything is filled out properly
@@ -14,36 +22,39 @@ const filloutForm = function () {
       alert('Fill out the "User Options" section in the extension options!');
       return;
     }
-    //Opens the tab with the form
-  //   chrome.tabs.create({ url: link, active: true }, (tab) => {
-  //     // Sets whatever period was selected in the activePeriod data storage
-  //     chrome.storage.sync.set({activePeriod: period_num}, () => {
-  //       // Now that we have the period in storage, we can inject our script into google forms
-          
-  //         chrome.tabs.onUpdated.addListener(function() {
-  //           chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-  //             chrome.tabs.executeScript(
-  //               tabs[0].id,
-  //               {code: 'document.body.style.backgroundColor = "' + "black" + '";'});
-  //             });     
-  //         });
-  //     });  
-  //         // chrome.tabs.executeScript(tab, {code: 'document.body.style.backgroundColor = "black"'}, () => {
-  //         //   // Set the last active time as the current time
-  //         //   // not sure how to do this yet
-  //         // });
-  //         // chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-  //         //   chrome.tabs.executeScript(
-  //         //       tabs[0].id,
-  //         //       {code: 'document.body.style.backgroundColor = "' + "black" + '";'});
-  //         // });       
-  //   });
+    // Puts the new last_completed date into this period
+    updateDate(period_num);
+    // Puts the current period into sync storage for use by the injected script
+    chrome.storage.sync.set({ currentPeriod: period_num });
+    // Gets info on the current tab
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tab) {
+      // Updates the URL on the current tab
+      chrome.tabs.update(null, { url: link, active: false });
+      // When the page is finished loading, inject the script
+      chrome.tabs.onUpdated.addListener(function injectScript(tab, info) {
+        if (info.status === "complete") {
+          // Removes the listener so the script doesn't get injected twice
+          chrome.tabs.onUpdated.removeListener(injectScript);
+          // Injects the script into the page
+          chrome.tabs.executeScript(null, { file: "jquery.js" }, function () {
+            chrome.tabs.executeScript(
+              null,
+              { file: "bililiteRange.js" },
+              function () {
+                chrome.tabs.executeScript(null, { file: "fillForm.js" });
+              }
+            );
+          });
+        }
+      });
+    });
   });
 };
 // Gets each of the setup classes
 chrome.storage.sync.get(["class"], (result) => {
   if (result.class === undefined) return;
   let classOptions = result.class;
+  // Goes through each of the options and adds a control cluster
   for (periodNumber of Object.keys(classOptions)) {
     let period = classOptions[periodNumber];
     // Adds the main period control div
@@ -78,4 +89,22 @@ chrome.storage.sync.get(["class"], (result) => {
     periodControlButtonPanel.appendChild(autoFillButton);
     periodControl.appendChild(periodControlButtonPanel);
   }
+  // Adds a button at the bottom of the page that fills out every form instantly
+  // let allButton = document.createElement('button');
+  // allButton.style.width = "80%";
+  // allButton.innerText = "Fill Out Everything";
+  // // Adds an event listener to the button
+  // allButton.addEventListener("click", function() {
+  //   chrome.storage.sync.get(["class"], async function(result) {
+  //     for (period of Object.values(result.class)) {
+  //       console.log(period)
+  //       await filloutForm.apply(period);
+  //     }
+  //   });
+  // });
+  // document.body.appendChild(allButton);
+  // Adds an info section to the bottom of the page
+  let infoSection = document.createElement('h5');
+  infoSection.innerText = 'To configure the extension, right click on the menu button and press "Options"';
+  document.body.appendChild(infoSection);
 });
