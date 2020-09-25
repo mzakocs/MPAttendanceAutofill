@@ -1,41 +1,3 @@
-// Test info filling
-let fillFormInfoButton = document.getElementById("fillFormInfo");
-fillFormInfoButton.addEventListener("click", () => {
-  // Fills user storage with fake user info
-  chrome.storage.sync.set(
-    {
-      user: { firstName: "Mitch", lastName: "Zakocs", studentID: "S21500853" },
-    },
-    () => {
-      // Fills form info with fake user info
-      chrome.storage.sync.set(
-        {
-          class: {
-            1: {
-              period_num: 1,
-              link:
-                "https://docs.google.com/forms/d/e/1FAIpQLSe_3nar9tNZfusj_3qU4ujEX6_3DD5oRd6e2Vk5lTmrzV6Y-g/viewform?usp=sf_link",
-              last_completed: "Thu Sep 23 2020",
-            },
-            2: {
-              period_num: 2,
-              link:
-                "https://docs.google.com/forms/d/e/1FAIpQLSe_3nar9tNZfusj_3qU4ujEX6_3DD5oRd6e2Vk5lTmrzV6Y-g/viewform?usp=sf_link",
-              last_completed: "Thu Sep 24 2020",
-            },
-          },
-        },
-        () => {
-          // Gets the info
-          chrome.storage.sync.get(["user", "class"], (result) => {
-            console.log(result);
-          });
-        }
-      );
-    }
-  );
-});
-
 // AutoFill fields in the options page
 chrome.storage.sync.get(["user", "class"], (result) => {
   // Starts with user info
@@ -49,10 +11,46 @@ chrome.storage.sync.get(["user", "class"], (result) => {
   // Then does class info
   if (result.class !== undefined) {
     let classOptions = result.class;
-    console.log(classOptions)
     for (fieldName of Object.keys(classOptions)) {
       let field = document.getElementById("period" + fieldName.toString());
       field.value = classOptions[fieldName].link;
     }
   }
+});
+
+// Save Button for User Options
+let userOptionsSave = document.getElementById("userOptionsSave");
+userOptionsSave.addEventListener("click", function () {
+  // Grab the values of the fields
+  let firstNameField = document.getElementById("firstName");
+  let lastNameField = document.getElementById("lastName");
+  let studentIDField = document.getElementById("studentID");
+  // Stores them in sync storage
+  chrome.storage.sync.set({
+    user: {
+      firstName: firstNameField.value,
+      lastName: lastNameField.value,
+      studentID: studentIDField.value,
+    },
+  }, function() {
+    alert("Saved User Options!")    
+  });
+});
+
+// Save button for class options
+let classOptionsSave = document.getElementById("classOptionsSave");
+classOptionsSave.addEventListener("click", function() {
+  // Grab the values of the fields
+  let classValues = {};
+  for (let i = 0; i < 10; i++) {
+    let classValue = document.getElementById("period" + i.toString()).value;
+    if (classValue) {
+      classValues[i] = {period_num: i, link: classValue, last_completed: null}
+    }
+  }
+  // Stores them in sync storage
+  chrome.storage.sync.set({class: classValues}, function() {
+    alert("Saved Class Options!");
+    console.log(classValues)
+  });
 });
