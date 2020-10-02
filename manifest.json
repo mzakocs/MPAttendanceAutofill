@@ -1,6 +1,6 @@
 {
   "name": "Mountain Pointe Attendance Autofill",
-  "version": "1.0",
+  "version": "1.1",
   "description": "An autofill helper for Mountain Pointe High School attendance forms.",
   "permissions": ["tabs", "storage", "*://docs.google.com/*"],
   "options_page": "options.html",
