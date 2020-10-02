@@ -22,7 +22,6 @@ chrome.storage.sync.get(["user", "currentPeriod"], function(result) {
   // handles inputs. They don't use the value field on the input tag, so 
   // I had to find a way to simulate input with bililiteRange
   $(".quantumWizTextinputPaperinputInput").each(function(index, elem) {
-    $(elem).click();
     if (index === 0) $(elem).sendkeys(firstName);
     else if (index === 1) $(elem).sendkeys(lastName);
     else if (index === 2) $(elem).sendkeys(studentID);
@@ -42,14 +41,16 @@ chrome.storage.sync.get(["user", "currentPeriod"], function(result) {
   inputs[2].value = studentID;
   // Grabs all of the period select radio buttons
   let radioPeriods = document.getElementsByClassName("appsMaterialWizToggleRadiogroupEl");
-  // Selects the one for the specific period and clicks it
-  radioPeriods[currentPeriod].click();
-  // Selects the very last radio button and clicks it (I have logged into my class today "yes")
-  radioPeriods[radioPeriods.length - 1].click();
-  // Finds the submit button and clicks it
-  let submitButton = document.getElementsByClassName("appsMaterialWizButtonPaperbuttonLabel quantumWizButtonPaperbuttonLabel exportLabel");
   setTimeout(function() {
-    submitButton[0].click();
-  }, 1000)
+    // Selects the one for the specific period and clicks it
+    radioPeriods[currentPeriod].click();
+    // Selects the very last radio button and clicks it (I have logged into my class today "yes")
+    radioPeriods[radioPeriods.length - 1].click();
+    setTimeout(function() {
+      // Grabs the submit button and clicks it
+      let submitButton = document.getElementsByClassName("appsMaterialWizButtonPaperbuttonLabel quantumWizButtonPaperbuttonLabel exportLabel");
+      submitButton[0].click();
+    }, 800);
+  }, 300)
 });
 
