@@ -26,7 +26,6 @@
         justify-content: center;
         flex-direction: row;
         color: white;
-        background-color: #222;
       }
       h2 {
         border-bottom: 2px solid #007fa9;
@@ -36,10 +35,10 @@
       }
       div {
         width: 100%;
-        font-size: 18px;
+        font-size: 20px;
       }
       p {
-        text-indent: 30px;
+        text-align: center;
       }
       input {
         width: 500px;
@@ -68,50 +67,76 @@
         border-bottom: none;
         color: #007fa9;
       }
+      .accordion {
+        cursor: pointer;
+        padding: 18px;
+        height: 60px;
+        width: 98%;
+        text-align: left;
+        border: none;
+        outline: none;
+        transition: 0.4s;
+        margin: 10px 0px;
+      }
+      .active,
+      .accordion:hover {
+        background-color: rgb(46, 46, 46);
+      }
+      .panel {
+        width: 90%;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+      .accordion:after {
+        content: "\02795"; /* plus sign (+) */
+        font-size: 13px;
+        float: right;
+        margin-left: 5px;
+        border: 0px;
+      }
+      .active:after {
+        content: "\2796"; /* minus sign (-) */
+      }
+      @media (prefers-color-scheme: light) {
+        .container {
+          background-color: rgb(241, 241, 241);
+          color: black;
+        }
+        a {
+          color: black;
+        }
+        input {
+          background-color: rgb(204, 204, 204);
+          border: 1px solid black;
+          color: black;
+        }
+        button {
+          background-color: rgb(204, 204, 204);
+          color: black;
+        }
+        .active,
+        .accordion:hover {
+          background-color: rgb(134, 134, 134);
+        }
+      }
     </style>
   </head>
   <body class="container">
-    <div>
-      <h2>About</h2>
-      <p>
-        Welcome to MP Attendance Autofill! This is an extension focused on
-        automating the attendance forms for Mountain Pointe High School. It's
-        extremely annoying to have to go to the attendance form, fill out all of
-        the fields by hand, and then remember whether you completed it already
-        or not. This extension aims to get rid of all of these annoyances, and
-        streamline the process for all Mountain Pointe students.
-      </p>
-    </div>
-    <div>
-      <h2>Setup</h2>
-      <p>
-        Let's get everything setup. First, start by filling out the "User
-        Information" section. This asks for your First Name, your Last Name, and
-        your Student ID. These are stored locally and used to fill out each
-        individual attendance form. Second, fill out the "Class Information"
-        section. This asks for all of your class periods, and allows us to fill
-        out and keep track of each class's attendance form. To get your
-        attendance form URL's, simply visit schoology, go to your attendance
-        form like you were filling it out normally, and then copy the link at
-        the top of the browser. This allows the extension to visit the
-        attendance page and fill it out for you.
-      </p>
-      <p>
-        Once you've done both of those, you can start using the extension!
-        Simply go to the extension menu in the top right of Chrome and click on
-        the Mountain Pointe logo. This will open a menu where you can auto-fill
-        a single attendance form, check if an attendance form has already been
-        filled out today, or auto-fill all of your attendance forms for the day.
-      </p>
-    </div>
     <div class="container">
       <h2>User Options</h2>
+      <p>
+        Start by filling out your information here. This is what will be
+        auto-filled into your attendance forms.
+      </p>
       <label for="firstName">First Name:</label>
       <input placeholder="Example: John" id="firstName" /> <br />
       <label for="lastName">Last Name:</label>
       <input placeholder="Example: Doe" id="lastName" /> <br />
       <label for="studentID">Student ID:</label>
-      <input placeholder="Example: 21900999" id="studentID" type="number" /> <br />
+      <input placeholder="Example: 21900999" id="studentID" type="number" />
+      <br />
       <!-- <div class="horizontalContainer">
           <label for="autoSubmit">Auto-Submit</label> <input id="autoSubmit" type="checkbox" />
           <label for="autoClose">Auto-Close</label> <input id="autoClose" type="checkbox" />
@@ -119,25 +144,132 @@
       <button id="userOptionsSave">Save</button>
     </div>
     <div class="container">
-      <h2>Class Options</h2>
-      <label for="period0">Zero Hour:</label> <input id="period0" />
-      <label for="period1">Period 1:</label> <input id="period1" />
-      <label for="period2">Period 2:</label> <input id="period2" />
-      <label for="period3">Period 3:</label> <input id="period3" />
-      <label for="period4">Period 4:</label> <input id="period4" />
-      <label for="period5">Period 5:</label> <input id="period5" />
-      <label for="period6">Period 6:</label> <input id="period6" />
-      <label for="period7">Period 7:</label> <input id="period7" />
-      <label for="period8">Period 8:</label> <input id="period8" />
-      <label for="period9">Period 9:</label> <input id="period9" />
-      <label for="period10">Period 10:</label> <input id="period10" /> <br />
-      <button id="classOptionsSave">Save</button> <br />
+      <h2>Attendance Links</h2>
+      <p>
+        Put the URLs to your attendance forms here. This can be found by going
+        into Schoology, going to your attendance form like usual, and copying
+        the link near the top of your web browser.
+      </p>
+      <label for="period0_attendance">Zero Hour:</label>
+      <input id="period0_attendance" />
+      <label for="period1_attendance">Period 1:</label>
+      <input id="period1_attendance" />
+      <label for="period2_attendance">Period 2:</label>
+      <input id="period2_attendance" />
+      <label for="period3_attendance">Period 3:</label>
+      <input id="period3_attendance" />
+      <label for="period4_attendance">Period 4:</label>
+      <input id="period4_attendance" />
+      <label for="period5_attendance">Period 5:</label>
+      <input id="period5_attendance" />
+      <label for="period6_attendance">Period 6:</label>
+      <input id="period6_attendance" />
+      <label for="period7_attendance">Period 7:</label>
+      <input id="period7_attendance" />
+      <label for="period8_attendance">Period 8:</label>
+      <input id="period8_attendance" />
+      <label for="period9_attendance">Period 9:</label>
+      <input id="period9_attendance" />
+      <label for="period10_attendance">Period 10:</label>
+      <input id="period10_attendance" /> <br />
+      <button id="attendanceLinkSave">Save</button> <br />
+    </div>
+    <div class="container">
+      <h2>Meeting Links</h2>
+      <p>
+        Put the URLs to your video meetings here. This can be found by going
+        into Schoology, going to your Google Meet/Zoom meeting like usual, and
+        copying the link near the top of your web browser.
+      </p>
+      <label for="period0_meeting">Zero Hour:</label>
+      <input id="period0_meeting" />
+      <label for="period1_meeting">Period 1:</label>
+      <input id="period1_meeting" />
+      <label for="period2_meeting">Period 2:</label>
+      <input id="period2_meeting" />
+      <label for="period3_meeting">Period 3:</label>
+      <input id="period3_meeting" />
+      <label for="period4_meeting">Period 4:</label>
+      <input id="period4_meeting" />
+      <label for="period5_meeting">Period 5:</label>
+      <input id="period5_meeting" />
+      <label for="period6_meeting">Period 6:</label>
+      <input id="period6_meeting" />
+      <label for="period7_meeting">Period 7:</label>
+      <input id="period7_meeting" />
+      <label for="period8_meeting">Period 8:</label>
+      <input id="period8_meeting" />
+      <label for="period9_meeting">Period 9:</label>
+      <input id="period9_meeting" />
+      <label for="period10_meeting">Period 10:</label>
+      <input id="period10_meeting" /> <br />
+      <button id="meetingLinkSave">Save</button> <br />
+    </div>
+    <div class="container">
+      <h2>Advanced Options</h2>
+      <button class="accordion">Class Aliases</button>
+      <div class="panel">
+        <div class="container">
+          <p>
+            This allows you to create aliases for your classes. For example, a
+            class can be labeled as "World History" instead of just "Period 1."
+            In the fields below, input the names of classes you'd like to see
+            appear instead of the generic period name.
+          </p>
+          <label for="period0_alias">Zero Hour Alias:</label>
+          <input id="period0_alias" />
+          <label for="period1_alias">Period 1 Alias:</label>
+          <input id="period1_alias" />
+          <label for="period2_alias">Period 2 Alias:</label>
+          <input id="period2_alias" />
+          <label for="period3_alias">Period 3 Alias:</label>
+          <input id="period3_alias" />
+          <label for="period4_alias">Period 4 Alias:</label>
+          <input id="period4_alias" />
+          <label for="period5_alias">Period 5 Alias:</label>
+          <input id="period5_alias" />
+          <label for="period6_alias">Period 6 Alias:</label>
+          <input id="period6_alias" />
+          <label for="period7_alias">Period 7 Alias:</label>
+          <input id="period7_alias" />
+          <label for="period8_alias">Period 8 Alias:</label>
+          <input id="period8_alias" />
+          <label for="period9_alias">Period 9 Alias:</label>
+          <input id="period9_alias" />
+          <label for="period10_alias">Period 10 Alias:</label>
+          <input id="period10_alias" /> <br />
+          <button id="aliasSave">Save</button> <br />
+        </div>
+      </div>
+      <button class="accordion">Google Meets Code Utility</button>
+      <div class="panel">
+        <p>
+          Some teachers don't have permanent links for their Google Meet
+          conferences. If you have one of these teachers, this option is perfect
+          for you. In short, it allows for you to set a link to the homepage
+          of Google Meets on your student account and then the extension will
+          automatically fill out the meeting code for you.
+          </br>
+          There is a short video <a href="">here</a> that explains this feature better. 
+          <span style="color: red; margin: 0px;">Do not use this without watching the video first.</span>
+        </p>
+        <label for="googleMeetBaseLink">Google Meet Base Link</label>
+        <input id="googleMeetBaseLink" placeholder="Example: https://meet.google.com/landing?authuser=1" />
+        <button id="gmcuSave">Save</button> <br />
+      </div>
     </div>
     <div>
       <h2>Credits</h2>
-      <p>Created by Mitch Zakocs</p>
-      <p>Please contact <a href="mailto:mzakocs@gmail.com">mzakocs@gmail.com</a> with any feature requests or bug reports.</p>
-      <p>If you're interested, check out the project on <a href="https://github.com/mzakocs/MPAttendanceAutofill">GitHub</a>!</p>
+      <p>Created by Mitch Zakocs.</p>
+      <p>
+        Please contact
+        <a href="mailto:mzakocs@gmail.com">mzakocs@gmail.com</a> with any
+        feature requests or bug reports.
+      </p>
+      <p>
+        If you're interested, check out the project on
+        <a href="https://github.com/mzakocs/MPAttendanceAutofill">GitHub</a>!
+      </p>
     </div>
   </body>
   <script src="options.js"></script>
