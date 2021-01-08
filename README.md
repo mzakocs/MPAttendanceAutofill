@@ -19,8 +19,8 @@ A simple extension for auto-filling Mountain Pointe High School attendance forms
 
 - 2.0
 
-  - Added the ability to easily have Google Meet/Zoom link shortcuts in the extension popup.
-  - Added the Google Meet Code Utility (GMCU), an easy way to join meetings from teachers that don't have a permanent conference link
+  - Added the ability to have Google Meet/Zoom link shortcuts in the extension popup.
+  - Added the Google Meet Code Utility (GMCU), an easy way to join meetings from teachers that don't have a permanent links.
   - Added the ability to create aliases for different classes. For example, you can now have a class labeled as "World History" instead of just "Period 1."
   - Added a preferences section. Includes options such as opening attendance links in new tabs and not automatically submitting forms (for the paranoid; allows you to check the info before manually submitting).
   - Added an experimental "Fill Out All Forms" feature. When enabled in settings, adds a button to the bottom of the popup that will quickly fill out all of your forms for the day. This is basically a "Wednesday Mode."
