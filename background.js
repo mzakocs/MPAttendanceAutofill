@@ -59,7 +59,7 @@ const filloutForm = async function (period, recursiveList = []) {
                     // This is created for the fillAll functionality of the extension
                     window.setTimeout(function () {
                       let recursiveLength = recursiveList.length;
-                      console.log(recursiveList)
+                      console.log(recursiveList);
                       if (recursiveLength > 1) {
                         recursiveList.forEach(function (recursivePeriod, i) {
                           if (

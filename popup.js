@@ -11,7 +11,9 @@ const sendFilloutCommand = function () {
   // Sends the JSON command through the port
   port.postMessage(jsonText);
   // Changes the icon on the popup menu
-  let completedIcon = document.getElementById(`period${period.period_num}_icon`);
+  let completedIcon = document.getElementById(
+    `period${period.period_num}_icon`
+  );
   completedIcon.className = "fa fa-check green";
 };
 
@@ -109,7 +111,7 @@ chrome.storage.sync.get(["class", "meeting", "alias"], (result) => {
       }
     }
     // Adds a button at the bottom of the page that fills out every form instantly
-    let allButton = document.createElement('button');
+    let allButton = document.createElement("button");
     allButton.style.width = "80%";
     allButton.innerText = "Fill Out Everything";
     // Adds an event listener to the button
