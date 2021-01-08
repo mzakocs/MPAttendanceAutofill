@@ -1,5 +1,3 @@
-// TODO: Create a settings page for the "fill out everything button." Have a simple explanation saying this is in beta, you should be patient when using it, and explain the delay setting. The button should be off by default.
-// TODO: Make it so that when you do the "fill out everything button" that it doesn't open each form in a new tab. Also ignore the auto submit settings option if its on.
 // AutoFill fields in the options page
 chrome.storage.sync.get(
   ["user", "class", "meeting", "alias", "gmcu", "preferences", "fillAllForms"],
