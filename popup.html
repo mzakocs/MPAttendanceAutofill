@@ -1,63 +1,70 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-    <style>
-      button {
-        height: 30px;
-        width: 30px;
-        margin: 0px 2px;
-        outline: none;
-      }
-      body {
-        width: 300px;
-        text-align: center;
-        color: black;
-        background-color: white;
-      }
-      h2 {
-        border-bottom: 2px solid currentColor;
-        line-height: 40px;
-      }
-      .container {
-        width: 100%;
-        margin: 10px 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        font-size: 18px;
-      }
-      .periodControls {
-        width: 90%;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        margin: 5px;
-      }
-      .periodLabel {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        max-width: 60%;
-        /* white-space: nowrap; */
-        margin: 0px;
-      }
-      .red {
-        color: red;
-        margin: 10px;
-      }
-      .green {
-        color: green;
-        margin: 10px;
-      }
-      .blue {
-        color: #007fa9;
-      }
-      /* Dark theme, doesn't look too great, might want to make it an option in the future */
-      /* @media (prefers-color-scheme: dark) {
+
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <style>
+    button {
+      height: 30px;
+      width: 30px;
+      margin: 0px 2px;
+      outline: none;
+    }
+
+    body {
+      width: 300px;
+      text-align: center;
+      color: black;
+      background-color: white;
+    }
+
+    h2 {
+      border-bottom: 2px solid currentColor;
+      line-height: 40px;
+    }
+
+    .container {
+      width: 100%;
+      margin: 10px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      font-size: 18px;
+    }
+
+    .periodControls {
+      width: 90%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin: 5px;
+    }
+
+    .periodLabel {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 60%;
+      /* white-space: nowrap; */
+      margin: 0px;
+    }
+
+    .red {
+      color: red;
+      margin: 10px;
+    }
+
+    .green {
+      color: green;
+      margin: 10px;
+    }
+
+    .blue {
+      color: #007fa9;
+    }
+
+    /* Dark theme, doesn't look too great, might want to make it an option in the future */
+    /* @media (prefers-color-scheme: dark) {
         body {
           width: 300px;
           text-align: center;
@@ -69,13 +76,15 @@
           color: white;
         }
       } */
-    </style>
-  </head>
-  <body>
-    <h2>MP Attendance Autofill</h2>
-    <div class="container" id="periodsContainer">
-      <!-- Class Periods Get Added Here by popup.js! -->
-    </div>
-    <script src="popup.js"></script>
-  </body>
+  </style>
+</head>
+
+<body>
+  <h2>MP Attendance Autofill</h2>
+  <div class="container" id="periodsContainer">
+    <!-- Class Periods Get Added Here by popup.js! -->
+  </div>
+  <script src="popup.js"></script>
+</body>
+
 </html>
