@@ -10,8 +10,10 @@ A simple extension for auto-filling Mountain Pointe High School attendance forms
 
 ## Files
 
+- background.js
+  - Main file that handles all of the script injection for auto-filling forms and opening meeting links. Handles any task that the user won't see or manage, anything that is intractable by the user goes inside of popup.js and options.js.
 - popup.js
-  - The main file for the extension. Injects a script into an attendance form to auto-fill it, keeps track of when they've been completed, and allows you to easily open class meetings.
+  - Stores the logic for the popup menu that allows the user to auto-fill attendance forms and open meeting links. Communicates with backend.js through extension ports for any injection or Chrome API tasks.
 - options.js
   - This is where the user configures the extension. Allows them to input all of their class attendance links, meeting links, and their student information.
 
