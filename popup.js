@@ -1,69 +1,48 @@
 /* FUNCTION DECLARATIONS */
-// Updates the date of a attendance auto-fill
-const updateDate = function (periodNumber) {
-  // Gets the old period data
-  chrome.storage.sync.get(["class"], (result) => {
-    let data = result.class;
-    data[periodNumber].last_completed = new Date().toDateString();
-    chrome.storage.sync.set({ class: data });
+// Sends a command to background.js to auto-fill a specific attendance form
+const sendFilloutCommand = function () {
+  let period = this;
+  // Opens a connection with background.js
+  let port = chrome.extension.connect({
+    name: "background_connection",
   });
-};
-
-// This grabs the user info, opens the given form, and then injects
-// the "formFillInjection" function into the google sheets page with the given params
-// Starts by getting the user info from the storage
-const filloutForm = async function () {
-  let { period_num, last_completed, link } = this;
-  await chrome.storage.sync.get(["user"], (result) => {
-    if (result.user === undefined) return;
-    let user = result.user;
-    // Checks that everything is filled out properly
-    if (!user.firstName || !user.lastName || !user.studentID) {
-      alert('Fill out the "User Options" section in the extension options!');
-      return;
-    }
-    // Puts the new last_completed date into this period
-    updateDate(period_num);
-    // Puts the current period into sync storage for use by the injected script
-    chrome.storage.sync.set({ currentPeriod: period_num });
-    // Gets info on the current tab
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tab) {
-      // Updates the URL on the current tab
-      chrome.tabs.update(null, { url: link, active: false });
-      // When the page is finished loading, inject the script
-      chrome.tabs.onUpdated.addListener(function injectScript(tab, info) {
-        if (info.status === "complete") {
-          // Removes the listener so the script doesn't get injected twice
-          chrome.tabs.onUpdated.removeListener(injectScript);
-          // Injects the script into the page
-          chrome.tabs.executeScript(null, { file: "jquery.js" }, function () {
-            chrome.tabs.executeScript(
-              null,
-              { file: "bililiteRange.js" },
-              function () {
-                chrome.tabs.executeScript(null, { file: "fillForm.js" });
-              }
-            );
-          });
-        }
-      });
-    });
-  });
+  // Creates a text JSON for transmission to the background
+  let jsonText = JSON.stringify({ type: "fillForm", period: period });
+  // Sends the JSON command through the port
+  port.postMessage(jsonText);
   // Changes the icon on the popup menu
-  let completedIcon = document.getElementById(`period${period_num}_icon`);
+  let completedIcon = document.getElementById(`period${period.period_num}_icon`);
   completedIcon.className = "fa fa-check green";
 };
 
-// Opens the meeting link from a button
-const openMeetingLink = async function () {
-  let { period_num, link } = this;
-  chrome.tabs.update(null, { url: link, active: false });
+// Sends a command to background.js to auto-fill all attendance forms
+const sendFilloutAllCommand = function () {
+  // Opens a connection with background.js
+  let port = chrome.extension.connect({
+    name: "background_connection",
+  });
+  // Creates a text JSON for transmission to the background
+  let jsonText = JSON.stringify({ type: "fillAllForms" });
+  // Sends the JSON command through the port
+  port.postMessage(jsonText);
+  // Changes the icon on the popup menu
 };
 
-/* RUNNING CODE STARTS HERE */
+// Sends a command to background.js to open a specific meeting link
+const sendMeetingOpenCommand = function () {
+  let meeting = this;
+  // Opens a connection with background.js
+  let port = chrome.extension.connect({
+    name: "background_connection",
+  });
+  // Creates a text JSON for transmission to the background
+  let jsonText = JSON.stringify({ type: "openMeeting", meeting: meeting });
+  // Sends the JSON command through the port
+  port.postMessage(jsonText);
+};
+
 // Sets up a control for each period that's been given
 let periodsContainer = document.getElementById("periodsContainer");
-
 // Gets each of the attendance link objects from sync storage
 chrome.storage.sync.get(["class", "meeting", "alias"], (result) => {
   if (result.class !== undefined) {
@@ -77,8 +56,7 @@ chrome.storage.sync.get(["class", "meeting", "alias"], (result) => {
       // Sets an alias label if there is one set
       if (result.alias && result.alias[periodNumber]) {
         periodControlLabel.innerHTML = result.alias[periodNumber];
-      }
-      else {
+      } else {
         periodControlLabel.innerHTML = "Period " + periodNumber.toString();
       }
       periodControlLabel.className = "periodLabel";
@@ -107,7 +85,7 @@ chrome.storage.sync.get(["class", "meeting", "alias"], (result) => {
       autoFillButton.title = "Auto-Fill Attendance for Period " + periodNumber;
       // Adds a click listener to the autofill button
       console.log(period);
-      autoFillButton.addEventListener("click", filloutForm.bind(period));
+      autoFillButton.addEventListener("click", sendFilloutCommand.bind(period));
       // Adds all of the period control buttons to the main periodControl div
       autoFillButton.appendChild(autoFillIcon);
       periodControlButtonPanel.appendChild(completedIcon);
@@ -125,25 +103,18 @@ chrome.storage.sync.get(["class", "meeting", "alias"], (result) => {
         meetingLinkButton.appendChild(meetingLinkButtonIcon);
         meetingLinkButton.addEventListener(
           "click",
-          openMeetingLink.bind(result.meeting[periodNumber])
+          sendMeetingOpenCommand.bind(result.meeting[periodNumber])
         );
         periodControlButtonPanel.appendChild(meetingLinkButton);
       }
     }
     // Adds a button at the bottom of the page that fills out every form instantly
-    // let allButton = document.createElement('button');
-    // allButton.style.width = "80%";
-    // allButton.innerText = "Fill Out Everything";
-    // // Adds an event listener to the button
-    // allButton.addEventListener("click", function() {
-    //   chrome.storage.sync.get(["class"], async function(result) {
-    //     for (period of Object.values(result.class)) {
-    //       console.log(period)
-    //       await filloutForm.apply(period);
-    //     }
-    //   });
-    // });
-    // document.body.appendChild(allButton);
+    let allButton = document.createElement('button');
+    allButton.style.width = "80%";
+    allButton.innerText = "Fill Out Everything";
+    // Adds an event listener to the button
+    allButton.addEventListener("click", sendFilloutAllCommand);
+    document.body.appendChild(allButton);
   }
   // Adds an info section to the bottom of the page
   let infoSection = document.createElement("h5");
