@@ -1,7 +1,8 @@
 // TODO: Create a settings page for the "fill out everything button." Have a simple explanation saying this is in beta, you should be patient when using it, and explain the delay setting. The button should be off by default.
+// TODO: Make it so that when you do the "fill out everything button" that it doesn't open each form in a new tab. Also ignore the auto submit settings option if its on.
 // AutoFill fields in the options page
 chrome.storage.sync.get(
-  ["user", "class", "meeting", "alias", "gmcu", "preferences"],
+  ["user", "class", "meeting", "alias", "gmcu", "preferences", "fillAllForms"],
   (result) => {
     // Starts with user info
     if (result.user !== undefined) {
@@ -48,6 +49,14 @@ chrome.storage.sync.get(
         );
         field.value = aliasOptions[aliasNum];
       }
+    }
+    // Fills out the Fill All Forms section
+    if (result.fillAllForms !== undefined) {
+      let fafOptions = result.fillAllForms;
+      let fillAllFormsEnabledField = document.getElementById("fillAllFormsEnabled");
+      fillAllFormsEnabledField.checked = fafOptions.enabled;
+      let fillAllFormsChangeDelayField = document.getElementById("fillAllFormsChangeDelay");
+      fillAllFormsChangeDelayField.value = fafOptions.delay;
     }
     // Fills out the Google Meets Code Utility section
     if (result.gmcu !== undefined) {
@@ -157,6 +166,21 @@ aliasSave.addEventListener("click", function () {
   });
 });
 
+// Save Button for Fill All Forms Configuration
+let fillAllFormsSave = document.getElementById("fillAllFormsSave");
+fillAllFormsSave.addEventListener("click", function () {
+  // Grab the values of gmcu field
+  let fillAllFormsEnabled = document.getElementById("fillAllFormsEnabled").checked;
+  let delayValue = document.getElementById("fillAllFormsChangeDelay").value;
+  // Stores them in sync storage
+  chrome.storage.sync.set(
+    { fillAllForms: { enabled: fillAllFormsEnabled, delay: delayValue } },
+    function () {
+      alert("Saved the Fill All Forms Settings!");
+    }
+  );
+});
+
 // Save Button for Google Meets Code Utility
 let gmcuSave = document.getElementById("gmcuSave");
 gmcuSave.addEventListener("click", function () {
@@ -192,3 +216,10 @@ for (let i = 0; i < accordions.length; i++) {
     }
   });
 }
+
+// Sets up the range input value display
+let rangeInput = document.getElementById("fillAllFormsChangeDelay");
+let delayIndicator = document.getElementById("delayIndicator");
+rangeInput.oninput = function () {
+  delayIndicator.innerHTML = `Page Change Delay (${this.value}s):`
+};

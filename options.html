@@ -247,6 +247,22 @@
           <button id="aliasSave">Save</button> <br />
         </div>
       </div>
+      <button class="accordion">Fill All Forms</button>
+      <div class="panel">
+        <p>
+          This adds a button to the popup that, when pressed, will automatically fill out every single form for the day. 
+          Please note that this feature is currently experimental and may not function perfectly in every circumstance. 
+          When using this feature, it is recommended to leave the browser alone for about 30 seconds as it goes through its processes.
+          Also, for people with a slower computer or internet, the extension may switch to the next attendance form
+          before its completed with the first. In this situation, adjust the Page Change Delay below to a higher number. 
+          If you're not experiencing issues, just leave the delay on the default setting.
+        </p>
+        <label for="fillAllFormsEnabled">Enabled:</label>
+        <input type="checkbox" id="fillAllFormsEnabled" />
+        <label id="delayIndicator" for="fillAllFormsChangeDelay">Page Change Delay (in seconds):</label>
+        <input type="range" min="3" max="10" value="3" id="fillAllFormsChangeDelay" />
+        <button id="fillAllFormsSave">Save</button> <br />
+      </div>
       <button class="accordion">Google Meets Code Utility</button>
       <div class="panel">
         <p>

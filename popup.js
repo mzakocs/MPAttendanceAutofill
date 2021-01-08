@@ -46,7 +46,7 @@ const sendMeetingOpenCommand = function () {
 // Sets up a control for each period that's been given
 let periodsContainer = document.getElementById("periodsContainer");
 // Gets each of the attendance link objects from sync storage
-chrome.storage.sync.get(["class", "meeting", "alias"], (result) => {
+chrome.storage.sync.get(["class", "meeting", "alias", "fillAllForms"], (result) => {
   if (result.class !== undefined) {
     let classOptions = result.class;
     // Goes through each of the options and adds a control cluster for each in the popup
@@ -111,12 +111,14 @@ chrome.storage.sync.get(["class", "meeting", "alias"], (result) => {
       }
     }
     // Adds a button at the bottom of the page that fills out every form instantly
-    let allButton = document.createElement("button");
-    allButton.style.width = "80%";
-    allButton.innerText = "Fill Out Everything";
-    // Adds an event listener to the button
-    allButton.addEventListener("click", sendFilloutAllCommand);
-    document.body.appendChild(allButton);
+    if (result.fillAllForms && result.fillAllForms.enabled) {
+      let allButton = document.createElement("button");
+      allButton.style.width = "85%";
+      allButton.innerText = "Fill All Forms";
+      // Adds an event listener to the button
+      allButton.addEventListener("click", sendFilloutAllCommand);
+      document.body.appendChild(allButton);
+    }
   }
   // Adds an info section to the bottom of the page
   let infoSection = document.createElement("h5");
@@ -124,3 +126,4 @@ chrome.storage.sync.get(["class", "meeting", "alias"], (result) => {
     'To configure the extension, right-click on the MP Logo and press "Options"';
   document.body.appendChild(infoSection);
 });
+

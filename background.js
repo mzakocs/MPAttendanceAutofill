@@ -13,8 +13,10 @@ const updateDate = function (periodNumber) {
 // the "formFillInjection" function into the google sheets page with the given params
 // Starts by getting the user info from the storage
 const filloutForm = async function (period, recursiveList = []) {
+  let recursiveLength = recursiveList.length;
+  let isRecursive = (recursiveLength > 1);
   let { period_num, last_completed, link } = period;
-  await chrome.storage.sync.get(["user", "preferences"], (result) => {
+  await chrome.storage.sync.get(["user", "preferences", "fillAllForms"], (result) => {
     if (result.user === undefined) return;
     let user = result.user;
     // Checks that everything is filled out properly
@@ -28,7 +30,7 @@ const filloutForm = async function (period, recursiveList = []) {
     chrome.storage.sync.set({ currentPeriod: period_num });
     // Checks if the "open in new tab" preference is on
     let preferences = result.preferences;
-    if (preferences && preferences.openInNewTabCheckbox) {
+    if (preferences && preferences.openInNewTabCheckbox && !isRecursive) {
       chrome.tabs.create({ active: true, url: link });
     }
     // If its not on, just keep going in the same tab
@@ -57,20 +59,21 @@ const filloutForm = async function (period, recursiveList = []) {
                   function () {
                     // Will repeatedly run the function until all periods are filled out
                     // This is created for the fillAll functionality of the extension
-                    window.setTimeout(function () {
-                      let recursiveLength = recursiveList.length;
-                      console.log(recursiveList);
-                      if (recursiveLength > 1) {
-                        recursiveList.forEach(function (recursivePeriod, i) {
-                          if (
-                            recursivePeriod === period &&
-                            i != recursiveLength - 1
-                          ) {
-                            filloutForm(recursiveList[i + 1], recursiveList);
-                          }
-                        });
-                      }
-                    }, 4000);
+                    if (result.fillAllForms) {
+                      let delay = result.fillAllForms.delay || 3;
+                      window.setTimeout(function () {
+                        if (isRecursive  && result.fillAllForms.enabled) {
+                          recursiveList.forEach(function (recursivePeriod, i) {
+                            if (
+                              recursivePeriod === period &&
+                              i != recursiveLength - 1
+                            ) {
+                              filloutForm(recursiveList[i + 1], recursiveList);
+                            }
+                          });
+                        }
+                      }, delay * 1000); // multiplied by 1000 to convert to milliseconds
+                    }
                   }
                 );
               }
