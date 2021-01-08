@@ -39,7 +39,7 @@ A simple extension for auto-filling Mountain Pointe High School attendance forms
   - Created a longer time buffer between the data input and the data submission on the form auto-fill script.
 
 - 1.0
-  - First Release
+  - First Release.
 
 ## Meta
 
