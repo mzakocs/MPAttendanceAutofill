@@ -1,5 +1,6 @@
+// TODO: Create a settings page for the "fill out everything button." Have a simple explanation saying this is in beta, you should be patient when using it, and explain the delay setting. The button should be off by default.
 // AutoFill fields in the options page
-chrome.storage.sync.get(["user", "class", "meeting", "alias", "gmcu"], (result) => {
+chrome.storage.sync.get(["user", "class", "meeting", "alias", "gmcu", "preferences"], (result) => {
   // Starts with user info
   if (result.user !== undefined) {
     let userOptions = result.user;
@@ -24,6 +25,14 @@ chrome.storage.sync.get(["user", "class", "meeting", "alias", "gmcu"], (result) 
       field.value = meetingOptions[fieldName].link;
     }
   }
+  // Fills out generic preferences
+  if (result.preferences !== undefined) {
+    let genericPreferences = result.preferences;
+    for (preference of Object.keys(genericPreferences)) {
+      let field = document.getElementById(preference);
+      field.checked = genericPreferences[preference];
+    }
+  }
   // Fills out the aliases
   if (result.alias !== undefined) {
     let aliasOptions = result.alias;
@@ -34,7 +43,7 @@ chrome.storage.sync.get(["user", "class", "meeting", "alias", "gmcu"], (result) 
   }
   // Fills out the Google Meets Code Utility section
   if (result.gmcu !== undefined) {
-    let gmcuLink = result.gmcu;
+    let gmcuLink = result.gmcu.base_link;
     let field = document.getElementById("googleMeetBaseLink");
     field.value = gmcuLink;
   }
@@ -64,7 +73,7 @@ let attendanceLinkSave = document.getElementById("attendanceLinkSave");
 attendanceLinkSave.addEventListener("click", function() {
   // Grab the values of the attendance link fields
   let attendanceValues = {};
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i <= 10; i++) {
     let attendanceValue = document.getElementById(`period${i.toString()}_attendance`).value;
     if (attendanceValue) {
       attendanceValues[i] = {period_num: i, link: attendanceValue, last_completed: null}
@@ -81,7 +90,7 @@ let meetingLinkSave = document.getElementById("meetingLinkSave");
 meetingLinkSave.addEventListener("click", function() {
   // Grab the values of the meeting link fields
   let meetingValues = {};
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i <= 10; i++) {
     let meetingValue = document.getElementById(`period${i.toString()}_meeting`).value;
     if (meetingValue) {
       meetingValues[i] = {period_num: i, link: meetingValue}
@@ -93,12 +102,26 @@ meetingLinkSave.addEventListener("click", function() {
   });
 });
 
+// Save Button for Generic Preferences 
+let preferenceSave = document.getElementById("preferenceSave");
+preferenceSave.addEventListener("click", function() {
+  // Grab the values of the alias fields
+  let preferenceValues = {};
+  // Gets the values from the checkboxes
+  preferenceValues.openInNewTabCheckbox = document.getElementById("openInNewTabCheckbox").checked;
+  preferenceValues.noAutoSubmitCheckbox = document.getElementById("noAutoSubmitCheckbox").checked;
+  // Stores them in sync storage
+  chrome.storage.sync.set({preferences: preferenceValues}, function() {
+    alert("Saved Generic Preferences!");
+  });
+});
+
 // Save Button for Class Aliases
 let aliasSave = document.getElementById("aliasSave");
 aliasSave.addEventListener("click", function() {
   // Grab the values of the alias fields
   let aliasValues = {};
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i <= 10; i++) {
     let aliasValue = document.getElementById(`period${i.toString()}_alias`).value;
     if (aliasValue) {
       aliasValues[i] = aliasValue;
@@ -117,9 +140,9 @@ gmcuSave.addEventListener("click", function() {
   let gmcuField = document.getElementById("googleMeetBaseLink");
   let gmcuFieldValue = gmcuField.value;
   // Stores them in sync storage
-  if (gmcuFieldValue.includes("meet.google.com")) {
-    chrome.storage.sync.set({gmcu: gmcuFieldValue}, function() {
-      alert("Saved Class Alias Options!");
+  if (gmcuFieldValue.includes("meet.google.com") || gmcuFieldValue == "") {
+    chrome.storage.sync.set({gmcu: {base_link: gmcuFieldValue, current_code: null}}, function() {
+      alert("Saved GMCU Settings!");
     });
   }
   else {

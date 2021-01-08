@@ -207,6 +207,12 @@
     </div>
     <div class="container">
       <h2>Advanced Options</h2>
+      <button class="accordion">Generic Preferences</button>
+      <div class="panel">
+        <label for="openInNewTabCheckbox">Open All Forms & Meetings in New Tabs:</label><input type="checkbox" id="openInNewTabCheckbox">
+        <label for="noAutoSubmitCheckbox">Don't Automatically Submit Forms:</label><input type="checkbox" id="noAutoSubmitCheckbox">
+        <button id="preferenceSave">Save</button> <br />
+      </div>
       <button class="accordion">Class Aliases</button>
       <div class="panel">
         <div class="container">
@@ -246,12 +252,11 @@
         <p>
           Some teachers don't have permanent links for their Google Meet
           conferences. If you have one of these teachers, this option is perfect
-          for you. In short, it allows for you to set a link to the homepage
-          of Google Meets on your student account and then the extension will
-          automatically fill out the meeting code for you.
+          for you. In short, you to set a link to the homepage
+          of Google Meets on your student account. The extension will then be able to
+          automatically fill out the meeting code to bring you into the conference.
           </br>
-          There is a short video <a href="">here</a> that explains this feature better. 
-          <span style="color: red; margin: 0px;">Do not use this without watching the video first.</span>
+          There is a short video <a href="https://youtu.be/jFQyNdjbSFg">here</a> that explains this feature in greater detail. 
         </p>
         <label for="googleMeetBaseLink">Google Meet Base Link</label>
         <input id="googleMeetBaseLink" placeholder="Example: https://meet.google.com/landing?authuser=1" />
