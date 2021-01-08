@@ -25,7 +25,7 @@ A simple extension for auto-filling Mountain Pointe High School attendance forms
   - Added a preferences section. Includes options such as opening attendance links in new tabs and not automatically submitting forms (for the paranoid; allows you to check the info before manually submitting).
   - Added an experimental "Fill Out All Forms" feature. When enabled in settings, adds a button to the bottom of the popup that will quickly fill out all of your forms for the day. This is basically a "Wednesday Mode."
   - Completely recoded script injection system for auto-filling scripts. Now uses a background script that is much more robust and reliable. Also brings the benefit of allowing auto-completion of all of the attendance forms at once.
-  - Added clearer instructions for the basic operation off the extension after criticism of the initial documentation.
+  - Added clearer instructions for the basic operation of the extension after criticism of the initial documentation.
   - Heavily improved the layout & styling of the popup and options menus.
   - Added a light theme to the options menu that is triggered by CSS media queries.
   - Improved the comments on many different parts of the source code.
