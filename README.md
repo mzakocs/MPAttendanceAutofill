@@ -19,6 +19,10 @@ A simple extension for auto-filling Mountain Pointe High School attendance forms
 
 ## Release History
 
+- 2.1
+  - Updated the GMCU system to the new Google Meets homepage layout.
+  - Changed the default delay of the Fill All Forms button to 4 seconds. The old default of 3 seconds was causing issues for most people.
+
 - 2.0
 
   - Added the ability to have Google Meet/Zoom link shortcuts in the extension popup.
