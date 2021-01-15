@@ -51,7 +51,11 @@ chrome.storage.sync.get(
       radioPeriods[currentPeriod].click();
       // Selects the very last radio button and clicks it (I have logged into my class today "yes")
       radioPeriods[radioPeriods.length - 1].click();
-      if (!result.preferences || !result.preferences.noAutoSubmitCheckbox || result.fillAllForms?.enabled) {
+      if (
+        !result.preferences ||
+        !result.preferences.noAutoSubmitCheckbox ||
+        result.fillAllForms?.enabled
+      ) {
         setTimeout(function () {
           // Grabs the submit button and clicks it
           let submitButton = document.getElementsByClassName(
