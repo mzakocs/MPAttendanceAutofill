@@ -60,7 +60,13 @@ const filloutForm = async function (period, recursiveList = []) {
                     // Will repeatedly run the function until all periods are filled out
                     // This is created for the fillAll functionality of the extension
                     if (result.fillAllForms) {
-                      let delay = result.fillAllForms.delay || 3;
+                      let delay = result.fillAllForms.delay || 4;
+                      // Quick check to make sure that the minimum delay is 4 seconds
+                      // The original delay of 3 seconds was way too short for anybody without god-tier internet
+                      if (delay < 4) {
+                        delay = 4;
+                      }
+                      // fills the next form recursively after the given delay
                       window.setTimeout(function () {
                         if (isRecursive  && result.fillAllForms.enabled) {
                           recursiveList.forEach(function (recursivePeriod, i) {
@@ -149,9 +155,18 @@ const gmcuInjection = async function () {
           null,
           { file: "injectables/jquery.js" },
           function () {
-            chrome.tabs.executeScript(null, {
-              file: "injectables/fillGMCU.js",
-            });
+            chrome.tabs.executeScript(
+              null,
+              { file: "injectables/bililiteRange.js" },
+              function () {
+                chrome.tabs.executeScript(
+                  null,
+                  {
+                    file: "injectables/fillGMCU.js",
+                  }
+                );
+              }
+            );
           }
         );
       }

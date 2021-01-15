@@ -54,7 +54,14 @@ chrome.storage.sync.get(
       let fillAllFormsEnabledField = document.getElementById("fillAllFormsEnabled");
       fillAllFormsEnabledField.checked = fafOptions.enabled;
       let fillAllFormsChangeDelayField = document.getElementById("fillAllFormsChangeDelay");
-      fillAllFormsChangeDelayField.value = fafOptions.delay;
+      // Quick check to make sure that the minimum delay is 4 seconds
+      // The original delay of 3 seconds was way too short for anybody without god-tier internet
+      if (fafOptions.delay < 4) {
+        fillAllFormsChangeDelayField.value = 4;
+      }
+      else {
+        fillAllFormsChangeDelayField.value = fafOptions.delay;
+      }
     }
     // Fills out the Google Meets Code Utility section
     if (result.gmcu !== undefined) {
