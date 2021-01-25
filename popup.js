@@ -27,7 +27,6 @@ const sendFilloutAllCommand = function () {
   let jsonText = JSON.stringify({ type: "fillAllForms" });
   // Sends the JSON command through the port
   port.postMessage(jsonText);
-  // Changes the icon on the popup menu
 };
 
 // Sends a command to background.js to open a specific meeting link
