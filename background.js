@@ -96,7 +96,8 @@ const filloutAllForms = async function () {
   await chrome.storage.sync.get(["class"], async function (result) {
     if (!result.class) return;
     let classes = result.class;
-    filloutForm(classes[1], Object.values(classes));
+    let arrayClasses = Object.values(classes);
+    filloutForm(arrayClasses[0], arrayClasses);
   });
 };
 
