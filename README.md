@@ -49,7 +49,7 @@ A simple extension for auto-filling Mountain Pointe High School attendance forms
 
 ## Meta
 
-Mitch Zakocs – mitchell.zakocs@pridetronics.com
+Mitch Zakocs – mzakocs@gmail.com
 
 [https://github.com/mzakocs/](https://github.com/mzakocs/)
 
